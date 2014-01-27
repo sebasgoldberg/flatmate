@@ -1,0 +1,8 @@
+uploads/*
+tags
+*.swp
+*.swo
+*.pyc
+flatmate/ambiente.py
+.coverage
+static/*
