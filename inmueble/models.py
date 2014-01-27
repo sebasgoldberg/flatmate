@@ -33,8 +33,18 @@ class Servicio(models.Model):
   def __unicode__(self):
     return u'%s' % self.descripcion
 
+class Barrio(models.Model):
+  descripcion = models.CharField(max_length=60, unique=True, verbose_name=ugettext_lazy(u'Descripcion'))
+  class Meta:
+    ordering = ['descripcion']
+    verbose_name = ugettext_lazy(u"Barrio")
+    verbose_name_plural = ugettext_lazy(u"Barrios")
+  def __unicode__(self):
+    return u'%s' % self.descripcion
+
 class Inmueble(models.Model):
-  titulo = models.CharField(max_length=200, verbose_name=ugettext_lazy(u'Titulo'))
+  barrio = models.ForeignKey(Barrio,verbose_name=ugettext_lazy(u'Barrio'))
+  direccion = models.CharField(max_length=200, verbose_name=ugettext_lazy(u'Direccion'))
   descripcion = models.TextField(verbose_name=ugettext_lazy(u'Descripcion'), null=True, blank=True)
   tipo_inmueble = models.ForeignKey(TipoInmueble,verbose_name=ugettext_lazy(u'Tipo de Inmueble'), null=True, blank=True)
   superficie = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
@@ -47,10 +57,9 @@ class Inmueble(models.Model):
   comodidades = models.ManyToManyField(Comodidad, blank=True, verbose_name=ugettext_lazy(u'Comodidades'))
   servicios = models.ManyToManyField(Servicio, blank=True, verbose_name=ugettext_lazy(u'Servicios'))
   def __unicode__(self):
-    direccion = self.direccioninmueble_set.first()
-    if not direccion:
-      return u'%s' % self.titulo
-    return u'%s' % direccion
+    if self.barrio:
+      return u'%s - %s' % (self.barrio, self.direccion) 
+    return u'%s' % self.id
 
   class Meta:
     verbose_name = ugettext_lazy(u"Inmueble")
@@ -74,12 +83,6 @@ class Inmueble(models.Model):
     return html
   thumbnails.allow_tags = True
   thumbnails.short_description = ugettext_lazy(u'Fotos')
-
-class DireccionInmueble(Direccion):
-  inmueble = models.ForeignKey(Inmueble,null=False, blank=False, verbose_name=ugettext_lazy(u'Inmueble'))
-  class Meta(Direccion.Meta):
-    verbose_name = ugettext_lazy(u"Direccion Inmueble")
-    verbose_name_plural = ugettext_lazy(u"Direcciones Inmueble")
 
 class FotoInmueble(models.Model):
   inmueble = models.ForeignKey(Inmueble)

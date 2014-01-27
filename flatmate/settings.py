@@ -40,9 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'south', 
-    'cities_light',
     'imagekit',
-    'iampacks.cross.direccion',
     'iampacks.cross.install',
     'inmueble',
 )
