@@ -12,7 +12,7 @@ class FotoInmuebleInline(admin.TabularInline):
 class InmuebleAdmin(admin.ModelAdmin):
   readonly_fields=['id','thumbnails']
   fieldsets=[
-    (ugettext_lazy(u'Información Principal'),
+    (ugettext_lazy(u'Informacion Principal'),
       {'fields':['thumbnails','id', 'barrio', 'direccion', 'descripcion', 'tipo_inmueble', 'superficie']}),
     (ugettext_lazy(u'Publicacion'), {'fields':[('precio_dia', 'precio_semana', 'precio_mes'), 'publicado', 'destacado']}),
     (None, {"classes": ("placeholder direccioninmueble_set-group",), "fields" : ()}),

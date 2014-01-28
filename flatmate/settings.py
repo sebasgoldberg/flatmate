@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'grappelli.dashboard',
     'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -101,3 +102,19 @@ MEDIA_URL = '/uploads/'
 STATIC_ROOT = ambiente.project_directory+'static'
 
 STATIC_URL = '/static/'
+
+GRAPPELLI_ADMIN_TITLE = ambiente.site_id
+GRAPPELLI_INDEX_DASHBOARD = 'flatmate.dashboard.CustomIndexDashboard'
+
+
+TEMPLATE_CONTEXT_PROCESSORS=(
+  "django.contrib.auth.context_processors.auth",
+  "django.core.context_processors.debug",
+  "django.core.context_processors.i18n",
+  "django.core.context_processors.media",
+  "django.core.context_processors.static",
+  "django.core.context_processors.tz",
+  "django.contrib.messages.context_processors.messages",
+# La linea que sigue se agrego por uni-form
+  'django.core.context_processors.request',
+)

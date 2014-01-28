@@ -84,6 +84,9 @@ class Inmueble(models.Model):
   thumbnails.allow_tags = True
   thumbnails.short_description = ugettext_lazy(u'Fotos')
 
+  def admin_url(self):
+    return '/admin/inmueble/inmueble/%s/'%self.id
+
 class FotoInmueble(models.Model):
   inmueble = models.ForeignKey(Inmueble)
   foto = models.ImageField(upload_to='inmueble/foto/', blank=True )
@@ -94,3 +97,11 @@ class FotoInmueble(models.Model):
   class Meta:
     verbose_name = ugettext_lazy(u"Foto Inmueble")
     verbose_name_plural = ugettext_lazy(u"Fotos Inmueble")
+
+"""
+class Alquiler(models.Model):
+  inmueble = models.ForeignKey(Inmueble, verbose_name=ugettext_lazy(u'Inmueble'))
+  fecha_desde = models.DateField(verbose_name=ugettext_lazy(u'Fecha Desde'))
+  fecha_hasta= models.DateField(verbose_name=ugettext_lazy(u'Fecha Hasta'))
+  precio = models.DecimalField(ugettext_lazy(u'Precio (u$s)'), max_digits=8, decimal_places=2, null=True, blank=True)
+"""
