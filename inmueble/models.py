@@ -142,6 +142,9 @@ class ImageField(models.ImageField):
     data.name = data.name.encode('ascii','ignore')
     return data
 
+from south.modelsinspector import add_introspection_rules
+add_introspection_rules([], ["^inmueble\.models\.ImageField"])
+
 class FotoInmueble(models.Model):
   inmueble = models.ForeignKey(Inmueble)
   foto = ImageField(upload_to=u'inmueble/foto/', blank=True )
