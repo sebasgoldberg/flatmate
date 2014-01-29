@@ -16,10 +16,10 @@ class Migration(SchemaMigration):
 
 
         # Changing field 'Inmueble.precio_semana'
-        db.alter_column(u'inmueble_inmueble', 'precio_semana', self.gf('django_prices.models.PriceField')(currency='USD', null=True, max_digits=8, decimal_places=2))
+        db.alter_column(u'inmueble_inmueble', 'precio_semana', self.gf('django.db.models.DecimalField')(null=True, max_digits=8, decimal_places=2))
 
         # Changing field 'Inmueble.precio_mes'
-        db.alter_column(u'inmueble_inmueble', 'precio_mes', self.gf('django_prices.models.PriceField')(currency='USD', null=True, max_digits=8, decimal_places=2))
+        db.alter_column(u'inmueble_inmueble', 'precio_mes', self.gf('django.db.models.DecimalField')(null=True, max_digits=8, decimal_places=2))
 
         # Changing field 'Inmueble.tipo_inmueble'
         db.alter_column(u'inmueble_inmueble', 'tipo_inmueble_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['inmueble.TipoInmueble'], null=True))
@@ -31,7 +31,7 @@ class Migration(SchemaMigration):
         db.alter_column(u'inmueble_inmueble', 'titulo', self.gf('django.db.models.fields.CharField')(default='', max_length=200))
 
         # Changing field 'Inmueble.precio_dia'
-        db.alter_column(u'inmueble_inmueble', 'precio_dia', self.gf('django_prices.models.PriceField')(currency='USD', null=True, max_digits=8, decimal_places=2))
+        db.alter_column(u'inmueble_inmueble', 'precio_dia', self.gf('django.db.models.DecimalField')(null=True, max_digits=8, decimal_places=2))
 
         # Changing field 'Comodidad.descripcion'
         db.alter_column(u'inmueble_comodidad', 'descripcion', self.gf('django.db.models.fields.CharField')(default='', unique=True, max_length=60))
@@ -60,10 +60,10 @@ class Migration(SchemaMigration):
         db.alter_column(u'inmueble_servicio', 'descripcion', self.gf('django.db.models.fields.CharField')(max_length=60, null=True))
 
         # Changing field 'Inmueble.precio_semana'
-        db.alter_column(u'inmueble_inmueble', 'precio_semana', self.gf('django_prices.models.PriceField')(default=0, currency='USD', max_digits=8, decimal_places=2))
+        db.alter_column(u'inmueble_inmueble', 'precio_semana', self.gf('django.db.models.DecimalField')(default=0, max_digits=8, decimal_places=2))
 
         # Changing field 'Inmueble.precio_mes'
-        db.alter_column(u'inmueble_inmueble', 'precio_mes', self.gf('django_prices.models.PriceField')(default=0, currency='USD', max_digits=8, decimal_places=2))
+        db.alter_column(u'inmueble_inmueble', 'precio_mes', self.gf('django.db.models.DecimalField')(default=0, max_digits=8, decimal_places=2))
 
         # Changing field 'Inmueble.tipo_inmueble'
         db.alter_column(u'inmueble_inmueble', 'tipo_inmueble_id', self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['inmueble.TipoInmueble']))
@@ -75,7 +75,7 @@ class Migration(SchemaMigration):
         db.alter_column(u'inmueble_inmueble', 'titulo', self.gf('django.db.models.fields.CharField')(max_length=200, null=True))
 
         # Changing field 'Inmueble.precio_dia'
-        db.alter_column(u'inmueble_inmueble', 'precio_dia', self.gf('django_prices.models.PriceField')(default=0, currency='USD', max_digits=8, decimal_places=2))
+        db.alter_column(u'inmueble_inmueble', 'precio_dia', self.gf('django.db.models.DecimalField')(default=0, max_digits=8, decimal_places=2))
 
         # Changing field 'Comodidad.descripcion'
         db.alter_column(u'inmueble_comodidad', 'descripcion', self.gf('django.db.models.fields.CharField')(max_length=60, null=True))
@@ -156,9 +156,9 @@ class Migration(SchemaMigration):
             'destacado': ('django.db.models.fields.BooleanField', [], {}),
             'fecha_ingreso': ('django.db.models.fields.DateField', [], {'default': 'datetime.datetime(2014, 1, 27, 0, 0)'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'precio_dia': ('django_prices.models.PriceField', [], {'currency': "'USD'", 'null': 'True', 'max_digits': '8', 'decimal_places': '2', 'blank': 'True'}),
-            'precio_mes': ('django_prices.models.PriceField', [], {'currency': "'USD'", 'null': 'True', 'max_digits': '8', 'decimal_places': '2', 'blank': 'True'}),
-            'precio_semana': ('django_prices.models.PriceField', [], {'currency': "'USD'", 'null': 'True', 'max_digits': '8', 'decimal_places': '2', 'blank': 'True'}),
+            'precio_dia': ('django.db.models.DecimalField', [], {'currency': "'USD'", 'null': 'True', 'max_digits': '8', 'decimal_places': '2', 'blank': 'True'}),
+            'precio_mes': ('django.db.models.DecimalField', [], {'currency': "'USD'", 'null': 'True', 'max_digits': '8', 'decimal_places': '2', 'blank': 'True'}),
+            'precio_semana': ('django.db.models.DecimalField', [], {'currency': "'USD'", 'null': 'True', 'max_digits': '8', 'decimal_places': '2', 'blank': 'True'}),
             'publicado': ('django.db.models.fields.BooleanField', [], {}),
             'servicios': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['inmueble.Servicio']", 'symmetrical': 'False', 'blank': 'True'}),
             'superficie': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '5', 'decimal_places': '2', 'blank': 'True'}),

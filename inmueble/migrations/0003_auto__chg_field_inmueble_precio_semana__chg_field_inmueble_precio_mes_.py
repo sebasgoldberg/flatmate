@@ -21,13 +21,13 @@ class Migration(SchemaMigration):
     def backwards(self, orm):
 
         # Changing field 'Inmueble.precio_semana'
-        db.alter_column(u'inmueble_inmueble', 'precio_semana', self.gf('django_prices.models.PriceField')(currency='USD', null=True, max_digits=8, decimal_places=2))
+        db.alter_column(u'inmueble_inmueble', 'precio_semana', self.gf('django.db.models.DecimalField')(null=True, max_digits=8, decimal_places=2))
 
         # Changing field 'Inmueble.precio_mes'
-        db.alter_column(u'inmueble_inmueble', 'precio_mes', self.gf('django_prices.models.PriceField')(currency='USD', null=True, max_digits=8, decimal_places=2))
+        db.alter_column(u'inmueble_inmueble', 'precio_mes', self.gf('django.db.models.DecimalField')(null=True, max_digits=8, decimal_places=2))
 
         # Changing field 'Inmueble.precio_dia'
-        db.alter_column(u'inmueble_inmueble', 'precio_dia', self.gf('django_prices.models.PriceField')(currency='USD', null=True, max_digits=8, decimal_places=2))
+        db.alter_column(u'inmueble_inmueble', 'precio_dia', self.gf('django.db.models.DecimalField')(null=True, max_digits=8, decimal_places=2))
 
     models = {
         u'cities_light.city': {
