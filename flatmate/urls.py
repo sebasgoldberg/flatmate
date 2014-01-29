@@ -14,6 +14,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^uploads/(?P<path>.*)$', 'django.views.static.serve',
       {'document_root': settings.MEDIA_ROOT}),
-    url(r'^$', RedirectView.as_view(url='http://baflatmate.com/')),
+    url(r'^$', RedirectView.as_view(url='/page/inmueble/')),
     url(r'^page/', include('page.urls')),
 )
