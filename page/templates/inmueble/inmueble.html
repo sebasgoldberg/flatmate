@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key={{ambiente.gmaps_api_key}}&sensor=false">
+    </script>
+    <script type="text/javascript">
+      function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng({% if latitud %}{{latitud|safe}}{%else%}-34.397{%endif%}, {%if longitud%}{{longitud|safe}}{%else%}150.644{%endif%}),
+          zoom: 13
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"),
+          mapOptions);
+
+        {% for inmueble in inmuebles %}
+          {% if inmueble.latitud and inmueble.longitud %}
+            // To add the marker to the map, use the 'map' property
+            var marker{{inmueble.id}} = new google.maps.Marker({
+              position: new google.maps.LatLng({{inmueble.latitud|safe}},{{inmueble.longitud|safe}}),
+              map: map,
+              title:"{{inmueble.direccion}} | {{inmueble.barrio}}"
+            });
+                    
+            var infowindow{{inmueble.id}} = new google.maps.InfoWindow({
+              content: "{{inmueble.infowindow|safe}}"
+              });
+
+            google.maps.event.addListener(marker{{inmueble.id}}, 'click', function() {
+              infowindow{{inmueble.id}}.open(map,marker{{inmueble.id}});
+              });
+
+          {%endif%}
+        {%endfor%}
+
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"/>
+  </body>
+</html>

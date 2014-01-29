@@ -1,5 +1,5 @@
 # coding=utf-8
-from base_ambiente import BaseAmbiente
+from iampacks.cross.ambiente.models import BaseAmbiente
 import os
 
 site_id='iamcast'
@@ -21,6 +21,7 @@ class Ambiente(BaseAmbiente):
       name='ciudades'
 
   project_directory = '%s/' % os.path.abspath('%s/..' % os.path.split(os.path.abspath(__file__))[0])
+  wsgi_dir = os.path.dirname(__file__)
 
   class email:
     host = 'smtp.gmail.com'
@@ -29,6 +30,9 @@ class Ambiente(BaseAmbiente):
     port = 587
 
   class zonomi:
+    api_key = None
+
+  class gmaps:
     api_key = None
 
 ambiente=Ambiente()

@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.db import models
 from iampacks.cross.direccion.models import Direccion
 from imagekit.models import ImageSpecField
@@ -5,6 +6,8 @@ from imagekit.processors import ResizeToFill, Adjust
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
 from datetime import date
+from iampacks.cross.gmap.models import Geocoder
+from django.core.exceptions import ValidationError
 
 class TipoInmueble(models.Model):
   descripcion = models.CharField(max_length=60, unique=True, verbose_name=ugettext_lazy(u'Descripcion'))
@@ -43,8 +46,9 @@ class Barrio(models.Model):
     return u'%s' % self.descripcion
 
 class Inmueble(models.Model):
-  barrio = models.ForeignKey(Barrio,verbose_name=ugettext_lazy(u'Barrio'))
+  barrio = models.ForeignKey(Barrio,verbose_name=ugettext_lazy(u'Barrio'), null=True, editable=False)
   direccion = models.CharField(max_length=200, verbose_name=ugettext_lazy(u'Direccion'))
+  direccion_gmap = models.CharField(max_length=200, verbose_name=ugettext_lazy(u'Direccion gmap'), null=True, editable=False)
   descripcion = models.TextField(verbose_name=ugettext_lazy(u'Descripcion'), null=True, blank=True)
   tipo_inmueble = models.ForeignKey(TipoInmueble,verbose_name=ugettext_lazy(u'Tipo de Inmueble'), null=True, blank=True)
   superficie = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
@@ -56,6 +60,8 @@ class Inmueble(models.Model):
   fecha_ingreso = models.DateField(default=date.today(), verbose_name=ugettext_lazy(u'Fecha Ingreso'))
   comodidades = models.ManyToManyField(Comodidad, blank=True, verbose_name=ugettext_lazy(u'Comodidades'))
   servicios = models.ManyToManyField(Servicio, blank=True, verbose_name=ugettext_lazy(u'Servicios'))
+  latitud = models.DecimalField(ugettext_lazy(u'Latitud'), max_digits=13, decimal_places=7, null=True, blank=True, editable=False)
+  longitud = models.DecimalField(ugettext_lazy(u'Longitud'), max_digits=13, decimal_places=7, null=True, blank=True, editable=False)
   def __unicode__(self):
     if self.barrio:
       return u'%s - %s' % (self.barrio, self.direccion) 
@@ -73,13 +79,17 @@ class Inmueble(models.Model):
   thumbnail.allow_tags = True
   thumbnail.short_description = ugettext_lazy(u'Foto')
 
-  def thumbnails(self):
+  def thumbnails(self,cantidad=0):
     html=''
     fotos=self.fotoinmueble_set.order_by('id')
+    i=0
     for foto in fotos:
+      if cantidad>0 and i>=cantidad:
+        break
       url = foto.foto.url
       url_thumbnail = foto.thumbnail.url
       html = html + "<a href='%s'><img src='%s' height=100 /></a>" % (url,url_thumbnail)
+      i+=1
     return html
   thumbnails.allow_tags = True
   thumbnails.short_description = ugettext_lazy(u'Fotos')
@@ -87,9 +97,54 @@ class Inmueble(models.Model):
   def admin_url(self):
     return '/admin/inmueble/inmueble/%s/'%self.id
 
+  def clean(self, *args, **kwargs):
+    self.direccion_gmap = None
+    self.barrio = None
+    self.latitud = None
+    self.longitud = None
+    try:
+      gmap = Geocoder(self.direccion)
+      self.direccion_gmap = gmap.direccion_completa()
+      self.barrio = Barrio.objects.get_or_create(descripcion=gmap.barrio())[0]
+      self.barrio.save()
+      self.latitud = gmap.latitud()
+      self.longitud = gmap.longitud()
+    except Exception:
+      raise ValidationError(_(u'No se ha podido determinar la direccion en el mapa.'))
+    super(Inmueble,self).clean(*args, **kwargs)
+
+  def precios(self):
+    listado_precios = []
+    if self.precio_dia and self.precio_dia != 0:
+      listado_precios.append('%s u$s' % self.precio_dia)
+    if self.precio_semana and self.precio_semana != 0:
+      listado_precios.append('%s u$s' % self.precio_semana)
+    if self.precio_mes and self.precio_mes != 0:
+      listado_precios.append('%s u$s' % self.precio_mes)
+    return ' - '.join(listado_precios)
+
+  def infowindow(self):
+    return '<h2>(%(id)s) %(direccion)s | %(barrio)s</h2> <h3>%(precios)s</h3> <p>%(thumbnails)s</p>' % {
+      'id': self.id,
+      'direccion': self.direccion,
+      'barrio': self.barrio,
+      'precios': self.precios(),
+      'thumbnails': self.thumbnails(3),
+    }
+
+class ImageField(models.ImageField):
+
+  def __init__(self, *args, **kwargs):
+    super(ImageField, self).__init__(*args, **kwargs)
+
+  def clean(self, *args, **kwargs):
+    data = super(ImageField, self).clean(*args, **kwargs)
+    data.name = data.name.encode('ascii','ignore')
+    return data
+
 class FotoInmueble(models.Model):
   inmueble = models.ForeignKey(Inmueble)
-  foto = models.ImageField(upload_to='inmueble/foto/', blank=True )
+  foto = ImageField(upload_to=u'inmueble/foto/', blank=True )
   thumbnail = ImageSpecField([Adjust(contrast=1.2, sharpness=1.1), ResizeToFill(100,100)], image_field='foto', format='JPEG', options={'quality': 90})
   mini_thumbnail = ImageSpecField([Adjust(contrast=1.2, sharpness=1.1), ResizeToFill(60,60)], image_field='foto', format='JPEG', options={'quality': 90})
   def __unicode__(self):

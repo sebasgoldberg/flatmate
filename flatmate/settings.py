@@ -43,7 +43,9 @@ INSTALLED_APPS = (
     'south', 
     'imagekit',
     'iampacks.cross.install',
+    'iampacks.cross.gmap',
     'inmueble',
+    'page',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -117,4 +119,5 @@ TEMPLATE_CONTEXT_PROCESSORS=(
   "django.contrib.messages.context_processors.messages",
 # La linea que sigue se agrego por uni-form
   'django.core.context_processors.request',
+  'iampacks.cross.ambiente.context_processors.add_ambiente',
 )
