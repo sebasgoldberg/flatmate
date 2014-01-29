@@ -36,5 +36,4 @@ class InmuebleAdmin(admin.ModelAdmin):
 admin.site.register(TipoInmueble)
 admin.site.register(Comodidad)
 admin.site.register(Servicio)
-admin.site.register(Barrio)
 admin.site.register(Inmueble,InmuebleAdmin)

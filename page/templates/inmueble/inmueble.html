@@ -6,6 +6,7 @@
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
       #map-canvas { height: 100% }
+      .infowindow { width: 300px }
     </style>
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key={{ambiente.gmaps_api_key}}&sensor=false">
@@ -29,7 +30,7 @@
             });
                     
             var infowindow{{inmueble.id}} = new google.maps.InfoWindow({
-              content: "{{inmueble.infowindow|safe}}"
+              content: "<div class='infowindow'>{{inmueble.infowindow|safe}}</div>",
               });
 
             google.maps.event.addListener(marker{{inmueble.id}}, 'click', function() {

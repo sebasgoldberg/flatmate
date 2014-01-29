@@ -88,7 +88,7 @@ class Inmueble(models.Model):
         break
       url = foto.foto.url
       url_thumbnail = foto.thumbnail.url
-      html = html + "<a href='%s'><img src='%s' height=100 /></a>" % (url,url_thumbnail)
+      html = html + "<a href='%s' target='blank'><img src='%s' height=100 /></a>" % (url,url_thumbnail)
       i+=1
     return html
   thumbnails.allow_tags = True
@@ -124,7 +124,7 @@ class Inmueble(models.Model):
     return ' - '.join(listado_precios)
 
   def infowindow(self):
-    return '<h2>(%(id)s) %(direccion)s | %(barrio)s</h2> <h3>%(precios)s</h3> <p>%(thumbnails)s</p>' % {
+    return '<h2>#%(id)s - %(direccion)s</h2>  <h3>%(barrio)s</h3> <h4>%(precios)s</h4> <p>%(thumbnails)s</p>' % {
       'id': self.id,
       'direccion': self.direccion,
       'barrio': self.barrio,
