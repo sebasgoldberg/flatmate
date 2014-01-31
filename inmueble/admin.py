@@ -3,6 +3,7 @@ from inmueble.models import *
 from django.contrib import admin
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
+from modeltranslation.admin import TranslationAdmin
 
 class FotoInmuebleInline(admin.TabularInline):
   model=FotoInmueble
@@ -32,8 +33,11 @@ class InmuebleAdmin(admin.ModelAdmin):
   list_per_page = 40
   actions_on_bottom = True
 
+class TipoInmuebleAdmin(TranslationAdmin):
+  pass
+
 # Register your models here.
-admin.site.register(TipoInmueble)
+admin.site.register(TipoInmueble,TipoInmuebleAdmin)
 admin.site.register(Comodidad)
 admin.site.register(Servicio)
 admin.site.register(Inmueble,InmuebleAdmin)

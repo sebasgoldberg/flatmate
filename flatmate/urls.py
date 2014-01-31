@@ -16,4 +16,5 @@ urlpatterns = patterns('',
       {'document_root': settings.MEDIA_ROOT}),
     url(r'^$', RedirectView.as_view(url='/page/inmueble/')),
     url(r'^page/', include('page.urls')),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
 )

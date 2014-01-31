@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south', 
     'imagekit',
+    'modeltranslation',
     'iampacks.cross.install',
     'iampacks.cross.gmap',
     'inmueble',
@@ -55,6 +56,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 )
 
 ROOT_URLCONF = 'flatmate.urls'
@@ -85,6 +87,13 @@ DATABASES = {
 
 LANGUAGE_CODE = 'es'
 
+gettext = lambda s: s
+
+LANGUAGES = (
+  ('es', gettext('Spanish')),
+  ('en', gettext('English')),
+)
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
@@ -92,7 +101,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
@@ -121,3 +129,4 @@ TEMPLATE_CONTEXT_PROCESSORS=(
   'django.core.context_processors.request',
   'iampacks.cross.ambiente.context_processors.add_ambiente',
 )
+

@@ -124,9 +124,10 @@ class Inmueble(models.Model):
     return ' - '.join(listado_precios)
 
   def infowindow(self):
-    return '<h2>#%(id)s - %(direccion)s</h2>  <h3>%(barrio)s</h3> <h4>%(precios)s</h4> <p>%(thumbnails)s</p>' % {
+    return '<h2>#%(id)s - %(direccion)s</h2>  <h3>%(tipo_inmueble)s - %(barrio)s</h3> <h4>%(precios)s</h4> <p>%(thumbnails)s</p>' % {
       'id': self.id,
       'direccion': self.direccion,
+      'tipo_inmueble': self.tipo_inmueble.descripcion,
       'barrio': self.barrio,
       'precios': self.precios(),
       'thumbnails': self.thumbnails(3),
