@@ -10,7 +10,7 @@ class FotoInmuebleInline(admin.TabularInline):
   extra=1
   max_num=12
 
-class InmuebleAdmin(admin.ModelAdmin):
+class InmuebleAdmin(TranslationAdmin):
   readonly_fields=['id','thumbnails', 'barrio', 'direccion_gmap',]
   fieldsets=[
     (ugettext_lazy(u'Informacion Principal'),
@@ -33,11 +33,17 @@ class InmuebleAdmin(admin.ModelAdmin):
   list_per_page = 40
   actions_on_bottom = True
 
+class ComodidadAdmin(TranslationAdmin):
+  pass
+
+class ServicioAdmin(TranslationAdmin):
+  pass
+
 class TipoInmuebleAdmin(TranslationAdmin):
   pass
 
 # Register your models here.
 admin.site.register(TipoInmueble,TipoInmuebleAdmin)
-admin.site.register(Comodidad)
-admin.site.register(Servicio)
+admin.site.register(Comodidad,ComodidadAdmin)
+admin.site.register(Servicio,ServicioAdmin)
 admin.site.register(Inmueble,InmuebleAdmin)
